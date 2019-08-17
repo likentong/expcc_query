@@ -1,0 +1,12 @@
+plugins {
+    id "org.springframework.boot" version "2.1.7.RELEASE"
+}
+
+dependencies {
+    implementation project(':adapters:persistence')
+    implementation project(':adapters:web')
+}
+
+bootJar {
+    mainClassName = 'org.exp.cc.app.RestApplication'
+}

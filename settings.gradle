@@ -1,0 +1,8 @@
+rootProject.name = 'expcc_query'
+include 'common'
+include 'application'
+include 'adapters:persistence'
+include 'adapters:web'
+include 'configuration'
+
+
