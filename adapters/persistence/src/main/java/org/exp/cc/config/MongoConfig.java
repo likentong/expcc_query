@@ -18,6 +18,9 @@ import java.io.IOException;
 import static org.exp.cc.constant.Constant.Profile.DEV;
 import static org.exp.cc.constant.Constant.Profile.NOT_DEV;
 
+/**
+ * MongoDB configuration.
+ */
 @Configuration
 public class MongoConfig {
 

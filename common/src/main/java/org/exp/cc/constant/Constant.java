@@ -1,5 +1,8 @@
 package org.exp.cc.constant;
 
+/**
+ * Constant.
+ */
 public final class Constant {
 
     private Constant(){

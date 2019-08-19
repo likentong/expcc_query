@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
+/**
+ * Spring boot application.
+ */
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class,
         EmbeddedMongoAutoConfiguration.class})
 @ComponentScan("org.exp.cc")

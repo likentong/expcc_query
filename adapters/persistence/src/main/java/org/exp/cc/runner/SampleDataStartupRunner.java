@@ -27,6 +27,9 @@ import java.util.Map;
 
 import static org.exp.cc.constant.Constant.Profile.SAMPLE_DATA;
 
+/**
+ * Sample data startup runner.
+ */
 @Component
 @Profile(SAMPLE_DATA)
 public class SampleDataStartupRunner implements CommandLineRunner {

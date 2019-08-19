@@ -3,6 +3,9 @@ package org.exp.cc.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * MongoDB properties.
+ */
 @Configuration
 @ConfigurationProperties(prefix = "expcc.mongodb")
 public class MongoProperties {
