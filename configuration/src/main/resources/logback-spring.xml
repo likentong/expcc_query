@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_LOCATION" value="./logs"/>
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-5level [%thread] %logger{0}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="springBootRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_LOCATION}/spring-boot.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_LOCATION}/archived/spring-boot-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="expccRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_LOCATION}/expcc.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_LOCATION}/archived/expcc-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="Console"/>
+    </root>
+
+    <logger name="org.springframework" level="info" additivity="false">
+        <appender-ref ref="springBootRollingFile"/>
+    </logger>
+
+    <logger name="org.exp.cc" level="info" additivity="false">
+        <appender-ref ref="expccRollingFile"/>
+    </logger>
+
+</configuration>
