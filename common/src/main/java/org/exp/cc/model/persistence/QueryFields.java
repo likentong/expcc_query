@@ -1,21 +1,24 @@
 package org.exp.cc.model.persistence;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Filter criteria.
+ * Query fields.
  */
-public class FilterCriteria {
-    private final List<Map<String, QueryFields>> filter;
+public class QueryFields {
+    private final List<Map<String, QueryOperator>> fields;
 
     @JsonCreator
-    public FilterCriteria(@JsonProperty("filter") final List<Map<String, QueryFields>> filter) {
-        this.filter = filter;
+    public QueryFields(final List<Map<String, QueryOperator>> fields) {
+        this.fields = fields;
+    }
+
+    public List<Map<String, QueryOperator>> getFields() {
+        return fields;
     }
 
     @Override
@@ -26,13 +29,13 @@ public class FilterCriteria {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final FilterCriteria that = (FilterCriteria) o;
-        return Objects.equals(filter, that.filter);
+        final QueryFields that = (QueryFields) o;
+        return Objects.equals(fields, that.fields);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(filter);
+        return Objects.hash(fields);
     }
 
 }

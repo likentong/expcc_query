@@ -1,24 +1,23 @@
 package org.exp.cc.model.persistence;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Logical query model.
+ * Query operator
  */
 public class QueryOperator {
-    private final List<Map<String, Map<String, Object>>> andOperator;
-    private final List<Map<String, Map<String, Object>>> orOperator;
+    private final Map<String, Object> operator;
 
     @JsonCreator
-    public QueryOperator(@JsonProperty("$and") final List<Map<String, Map<String, Object>>> andOperator,
-                         @JsonProperty("$or") final List<Map<String, Map<String, Object>>> orOperator) {
-        this.andOperator = andOperator;
-        this.orOperator = orOperator;
+    public QueryOperator(final Map<String, Object> operator) {
+        this.operator = operator;
+    }
+
+    public Map<String, Object> getOperator() {
+        return operator;
     }
 
     @Override
@@ -30,13 +29,11 @@ public class QueryOperator {
             return false;
         }
         final QueryOperator that = (QueryOperator) o;
-        return Objects.equals(andOperator, that.andOperator) &&
-                Objects.equals(orOperator, that.orOperator);
+        return Objects.equals(operator, that.operator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(andOperator, orOperator);
+        return Objects.hash(operator);
     }
-
 }
