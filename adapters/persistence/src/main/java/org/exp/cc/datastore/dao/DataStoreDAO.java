@@ -16,5 +16,14 @@ public interface DataStoreDAO {
      * @param fieldsToRetrive field to retrive
      * @return result from data store
      */
-    Map<String, Object> queryData(String entity, FilterCriteria filter, List<String> fieldsToRetrive);
+    List<Map<String, Object>> queryData(String entity, FilterCriteria filter, List<String> fieldsToRetrive);
+
+    /**
+     * Query data based on given entity, query string and fields to retrieve.
+     * @param entity entity
+     * @param query query
+     * @param fieldsToRetrive field to retrive
+     * @return result from data store
+     */
+    List<Map<String, Object>> queryData(String entity, String query, List<String> fieldsToRetrive);
 }

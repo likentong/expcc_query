@@ -11,7 +11,12 @@ import java.util.Map;
  */
 public class MongoDataStoreImpl implements DataStoreDAO {
     @Override
-    public Map<String, Object> queryData(final String entity, final FilterCriteria filter, final List<String> fieldsToRetrive) {
+    public List<Map<String, Object>> queryData(final String entity, final FilterCriteria filter, final List<String> fieldsToRetrive) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<Map<String, Object>> queryData(final String entity, final String query, final List<String> fieldsToRetrive) {
         throw new UnsupportedOperationException();
     }
 }
