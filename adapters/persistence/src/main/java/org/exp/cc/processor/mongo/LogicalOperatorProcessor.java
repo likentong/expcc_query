@@ -1,12 +1,12 @@
-package org.exp.cc.processor;
+package org.exp.cc.processor.mongo;
 
 import org.exp.cc.model.persistence.QueryCriteria;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 /**
- * Query processor.
+ * Logical operator processor.
  */
-public interface QueryProcessor {
+public interface LogicalOperatorProcessor {
     /**
      * Generate mongodb criteria based on query.
      * @param queryCriteria query criteria

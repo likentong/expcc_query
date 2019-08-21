@@ -2,7 +2,6 @@ package org.exp.cc.model.persistence;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -10,14 +9,14 @@ import java.util.Objects;
  * Query fields.
  */
 public class QueryFields {
-    private final List<Map<String, QueryOperator>> fields;
+    private final Map<String, QueryOperator> fields;
 
     @JsonCreator
-    public QueryFields(final List<Map<String, QueryOperator>> fields) {
+    public QueryFields(final Map<String, QueryOperator> fields) {
         this.fields = fields;
     }
 
-    public List<Map<String, QueryOperator>> getFields() {
+    public Map<String, QueryOperator> getFields() {
         return fields;
     }
 
