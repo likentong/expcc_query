@@ -1,8 +1,9 @@
 package org.exp.cc.datastore.dao.demographic;
 
-import org.exp.cc.model.persistence.FilterCriteria;
+import org.exp.cc.model.persistence.QueryCriteria;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Demographic DAO.
@@ -13,5 +14,5 @@ public interface DemographicDAO {
      * @param filter filter
      * @return list of object
      */
-    List<Object> getIds(FilterCriteria filter);
+    Optional<List<Object>> getIds(QueryCriteria filter);
 }

@@ -8,14 +8,18 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Filter criteria.
+ * Query criteria.
  */
-public class FilterCriteria {
-    private final List<Map<String, QueryFields>> filter;
+public class QueryCriteria {
+    private final List<Map<String, QueryFields>> query;
 
     @JsonCreator
-    public FilterCriteria(@JsonProperty("filter") final List<Map<String, QueryFields>> filter) {
-        this.filter = filter;
+    public QueryCriteria(@JsonProperty("query") final List<Map<String, QueryFields>> query) {
+        this.query = query;
+    }
+
+    public List<Map<String, QueryFields>> getQuery() {
+        return query;
     }
 
     @Override
@@ -26,13 +30,13 @@ public class FilterCriteria {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final FilterCriteria that = (FilterCriteria) o;
-        return Objects.equals(filter, that.filter);
+        final QueryCriteria that = (QueryCriteria) o;
+        return Objects.equals(query, that.query);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(filter);
+        return Objects.hash(query);
     }
 
 }

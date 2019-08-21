@@ -9,7 +9,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
@@ -39,7 +38,6 @@ public class SampleDataStartupRunner implements CommandLineRunner {
     private final MongoTemplate mongoTemplate;
     private final ResourcePatternResolver resourcePatternResolver;
 
-    @Autowired
     public SampleDataStartupRunner(final MongoTemplate mongoTemplate, final ResourcePatternResolver resourcePatternResolver) {
         this.mongoTemplate = mongoTemplate;
         this.resourcePatternResolver = resourcePatternResolver;

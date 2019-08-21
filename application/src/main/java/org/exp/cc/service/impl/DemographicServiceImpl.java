@@ -1,6 +1,6 @@
 package org.exp.cc.service.impl;
 
-import org.exp.cc.model.demographic.service.DemographicFilter;
+import org.exp.cc.model.demographic.service.DemographicQuery;
 import org.exp.cc.model.demographic.service.DemographicResult;
 import org.exp.cc.service.DemographicService;
 
@@ -9,7 +9,7 @@ import org.exp.cc.service.DemographicService;
  */
 public class DemographicServiceImpl implements DemographicService {
     @Override
-    public DemographicResult queryData(final DemographicFilter filter) {
+    public DemographicResult queryData(final DemographicQuery filter) {
         throw new UnsupportedOperationException();
     }
 }

@@ -1,6 +1,6 @@
 package org.exp.cc.service;
 
-import org.exp.cc.model.demographic.service.DemographicFilter;
+import org.exp.cc.model.demographic.service.DemographicQuery;
 import org.exp.cc.model.demographic.service.DemographicResult;
 
 /**
@@ -12,5 +12,5 @@ public interface DemographicService {
      * @param filter filter
      * @return demographic result
      */
-    DemographicResult queryData(DemographicFilter filter);
+    DemographicResult queryData(DemographicQuery filter);
 }
