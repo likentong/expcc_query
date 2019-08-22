@@ -62,7 +62,7 @@ public class MongoComparisonOperatorProcessor implements ComparisonOperatorProce
                             })
                             .toArray(Criteria[]::new);
 
-                    return andCriteria.andOperator(criteria);
+                    return criteria.length == 1 ? criteria[0] : andCriteria.andOperator(criteria);
                 })
                 .toArray(Criteria[]::new);
     }

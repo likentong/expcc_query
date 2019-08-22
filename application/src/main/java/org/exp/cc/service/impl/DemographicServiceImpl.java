@@ -4,11 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import org.exp.cc.constant.ApplicationConstant;
 import org.exp.cc.constant.PersistenceConstant;
 import org.exp.cc.datastore.dao.demographic.DemographicDAO;
-import org.exp.cc.model.service.demographic.DemographicQuery;
 import org.exp.cc.model.service.Result;
+import org.exp.cc.model.service.demographic.DemographicQuery;
 import org.exp.cc.service.DemographicService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,6 @@ public class DemographicServiceImpl implements DemographicService {
                 ApplicationConstant.Summary.RECORD_COUNT, demographicIds.size()
         );
 
-        return new Result(null, summary);
+        return new Result(Collections.emptyList(), summary);
     }
 }

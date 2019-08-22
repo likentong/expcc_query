@@ -10,8 +10,15 @@ import java.util.Set;
 public interface PersonService {
     /**
      * Get person by given set of id.
-     * @param id set of id
+     * @param id id
      * @return result
      */
     Result getPerson(Set<Object> id);
+
+    /**
+     * Get person count by given set of id.
+     * @param id id
+     * @return result
+     */
+    Result getPersonCountGroupByDemographicID(Set<Object> id);
 }

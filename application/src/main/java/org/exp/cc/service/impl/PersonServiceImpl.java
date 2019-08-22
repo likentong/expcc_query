@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Person service impl.
  */
@@ -24,12 +26,25 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Result getPerson(final Set<Object> id) {
+        checkArgument(id != null, "id cannot be null.");
+
         List<Map<String, Object>> persons = this.personDAO.getPersonById(id);
 
-        final Map<String, Object> summary = ImmutableMap.of(
-                ApplicationConstant.Summary.RECORD_COUNT, persons.size()
-        );
+        return new Result(persons, generateSummary(persons.size()));
+    }
 
-        return new Result(persons, summary);
+    @Override
+    public Result getPersonCountGroupByDemographicID(final Set<Object> id) {
+        checkArgument(id != null, "id cannot be null.");
+
+        List<Map<String, Object>> personCount = this.personDAO.getPersonCountById(id);
+
+        return new Result(personCount, generateSummary(personCount.size()));
+    }
+
+    private Map<String, Object> generateSummary(final Integer recordCount) {
+        return ImmutableMap.of(
+                ApplicationConstant.Summary.RECORD_COUNT, recordCount
+        );
     }
 }

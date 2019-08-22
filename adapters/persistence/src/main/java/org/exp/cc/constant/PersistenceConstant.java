@@ -21,4 +21,11 @@ public class PersistenceConstant {
         private Demographic() {
         }
     }
+
+    public static final class Person {
+       public static final String ID_PERSON = "idPerson";
+
+        private Person(){
+        }
+    }
 }
