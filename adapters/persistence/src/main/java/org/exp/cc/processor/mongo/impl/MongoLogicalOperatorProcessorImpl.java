@@ -51,8 +51,8 @@ public class MongoLogicalOperatorProcessorImpl implements LogicalOperatorProcess
                             .stream()
                             .filter(logicalOperator -> !validLogicalOperator.contains(logicalOperator))
                             .findAny()
-                            .ifPresent(opt -> {
-                                throw new InvalidQueryException(String.format("%s logical operator not supported.", opt));
+                            .ifPresent(operator -> {
+                                throw new InvalidQueryException(String.format("%s logical operator not supported.", operator));
                             });
 
                     final List<Criteria> logicalCriteria = new ArrayList<>();

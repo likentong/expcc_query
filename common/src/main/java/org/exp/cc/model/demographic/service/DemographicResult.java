@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class DemographicResult extends DemographicResponse {
 
-    public DemographicResult(final Map<String, Object> result, final List<Map<String, Object>> details) {
-        super(result, details);
+    public DemographicResult(final List<Map<String, Object>> result, final Map<String, Object> summary) {
+        super(result, summary);
     }
 }

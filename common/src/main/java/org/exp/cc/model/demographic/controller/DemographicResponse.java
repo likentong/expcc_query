@@ -11,14 +11,22 @@ import java.util.Objects;
  * Demographic response model.
  */
 public class DemographicResponse {
-    private final Map<String, Object> result;
-    private final List<Map<String, Object>> details;
+    private final List<Map<String, Object>> result;
+    private final Map<String, Object> summary;
 
     @JsonCreator
-    public DemographicResponse(@JsonProperty("result") final Map<String, Object> result,
-                               @JsonProperty("details") final List<Map<String, Object>> details) {
+    public DemographicResponse(@JsonProperty("result") final List<Map<String, Object>> result,
+                               @JsonProperty("details") final Map<String, Object> summary) {
         this.result = result;
-        this.details = details;
+        this.summary = summary;
+    }
+
+    public List<Map<String, Object>> getResult() {
+        return result;
+    }
+
+    public Map<String, Object> getSummary() {
+        return summary;
     }
 
     @Override
@@ -31,11 +39,11 @@ public class DemographicResponse {
         }
         final DemographicResponse that = (DemographicResponse) o;
         return Objects.equals(result, that.result) &&
-                Objects.equals(details, that.details);
+                Objects.equals(summary, that.summary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(result, details);
+        return Objects.hash(result, summary);
     }
 }

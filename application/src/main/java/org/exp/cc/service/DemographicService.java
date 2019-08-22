@@ -9,8 +9,8 @@ import org.exp.cc.model.demographic.service.DemographicResult;
 public interface DemographicService {
     /**
      * Query data based on given filter.
-     * @param filter filter
+     * @param query query
      * @return demographic result
      */
-    DemographicResult queryData(DemographicQuery filter);
+    DemographicResult queryData(DemographicQuery query);
 }
