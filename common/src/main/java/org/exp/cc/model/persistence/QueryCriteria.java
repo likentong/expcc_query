@@ -1,7 +1,6 @@
 package org.exp.cc.model.persistence;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ public class QueryCriteria {
     private final List<Map<String, QueryFields>> query;
 
     @JsonCreator
-    public QueryCriteria(@JsonProperty("query") final List<Map<String, QueryFields>> query) {
+    public QueryCriteria(final List<Map<String, QueryFields>> query) {
         this.query = query;
     }
 

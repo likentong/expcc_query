@@ -1,4 +1,4 @@
-package org.exp.cc.model.demographic.controller;
+package org.exp.cc.model.controller.demographic;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +14,7 @@ import java.util.Map;
 public class DemographicRequest extends QueryCriteria {
 
     @JsonCreator
-    public DemographicRequest(@JsonProperty("filter") final List<Map<String, QueryFields>> filter) {
+    public DemographicRequest(@JsonProperty("query") final List<Map<String, QueryFields>> filter) {
         super(filter);
     }
 }

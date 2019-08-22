@@ -9,7 +9,9 @@ import org.exp.cc.processor.mongo.ComparisonOperatorProcessor;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -19,17 +21,17 @@ import java.util.stream.Collectors;
 @Component
 public class MongoComparisonOperatorProcessor implements ComparisonOperatorProcessor {
     private final Map<String, BiFunction<String, Object, Criteria>> comparisonOperatorProcessor =
-            ImmutableMap.of(
-                    ComparisonOperator.EQ.getOperator(), this::eqComparisonProcessor,
-                    ComparisonOperator.GT.getOperator(), this::gtComparisonProcessor,
-                    ComparisonOperator.GTE.getOperator(), this::gteComparisonProcessor,
-                    ComparisonOperator.LT.getOperator(), this::ltComparisonProcessor,
-                    ComparisonOperator.LTE.getOperator(), this::lteComparisonProcessor
-            );
+            ImmutableMap.<String, BiFunction<String, Object, Criteria>>builder()
+                    .put(ComparisonOperator.EQ.getOperator(), this::eqComparisonProcessor)
+                    .put(ComparisonOperator.GT.getOperator(), this::gtComparisonProcessor)
+                    .put(ComparisonOperator.GTE.getOperator(), this::gteComparisonProcessor)
+                    .put(ComparisonOperator.LT.getOperator(), this::ltComparisonProcessor)
+                    .put(ComparisonOperator.LTE.getOperator(), this::lteComparisonProcessor)
+                    .put(ComparisonOperator.IN.getOperator(), this::inComparisonProcessor)
+                    .build();
 
     @Override
     public Criteria[] generateCriteria(final QueryFields queryFields) {
-        //pending checking
         final List<String> validComparisonOperator = Arrays.stream(ComparisonOperator.values())
                 .map(ComparisonOperator::getOperator)
                 .collect(Collectors.toList());
@@ -38,35 +40,30 @@ public class MongoComparisonOperatorProcessor implements ComparisonOperatorProce
                 .entrySet()
                 .stream()
                 .map(fields -> {
-                    final List<Criteria> comparisonCriteria = new ArrayList<>();
                     final String fieldName = fields.getKey();
+                    final Criteria andCriteria = new Criteria();
 
-                    //every field only has one operator
-                    final Optional<Map.Entry<String, Object>> queryOperator = fields.getValue()
+                    final Criteria[] criteria = fields.getValue()
                             .getOperator()
                             .entrySet()
                             .stream()
-                            .findFirst();
+                            .map(operation -> {
+                                final String operator = operation.getKey();
 
-                    if (queryOperator.isPresent()) {
-                        final String operator = queryOperator.get().getKey();
+                                if (!validComparisonOperator.contains(operator)) {
+                                    throw new InvalidQueryException(String.format("%s comparison operator not supported.", operator));
+                                }
 
-                        if (!validComparisonOperator.contains(operator)) {
-                            throw new InvalidQueryException(String.format("%s comparison operator not supported.", operator));
-                        }
+                                if (this.comparisonOperatorProcessor.get(operator) == null) {
+                                    throw new ApplicationRuntimeException(String.format("Comparison operator processor not found for %s", operator));
+                                }
 
-                        if (this.comparisonOperatorProcessor.get(operator) == null) {
-                            throw new ApplicationRuntimeException(String.format("Comparison operator processor not found for %s", operator));
-                        }
+                                return this.comparisonOperatorProcessor.get(operator).apply(fieldName, operation.getValue());
+                            })
+                            .toArray(Criteria[]::new);
 
-                        comparisonCriteria.add(this.comparisonOperatorProcessor.get(operator).apply(fieldName, queryOperator.get().getValue()));
-                    } else {
-                        throw new InvalidQueryException(String.format("Field [%s] does not has a query operator.", fieldName));
-                    }
-
-                    return comparisonCriteria;
+                    return andCriteria.andOperator(criteria);
                 })
-                .flatMap(Collection::stream)
                 .toArray(Criteria[]::new);
     }
 
@@ -88,5 +85,9 @@ public class MongoComparisonOperatorProcessor implements ComparisonOperatorProce
 
     private Criteria lteComparisonProcessor(final String fieldName, final Object fieldValue) {
         return Criteria.where(fieldName).lte(fieldValue);
+    }
+
+    private Criteria inComparisonProcessor(final String fieldName, final Object fieldValue) {
+        return Criteria.where(fieldName).in(fieldValue);
     }
 }

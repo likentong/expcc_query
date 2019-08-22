@@ -1,4 +1,4 @@
-package org.exp.cc.model.demographic.service;
+package org.exp.cc.model.service.demographic;
 
 import org.exp.cc.model.persistence.QueryCriteria;
 import org.exp.cc.model.persistence.QueryFields;

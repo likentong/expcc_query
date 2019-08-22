@@ -24,6 +24,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 @Repository
 public class MongoDataStoreImpl implements DataStoreDAO {
+    private static final String MONGO_OBJECT_ID = "_id";
+
     private final MongoTemplate mongoTemplate;
     private final LogicalOperatorProcessor logicalOperatorProcessor;
 
@@ -41,6 +43,9 @@ public class MongoDataStoreImpl implements DataStoreDAO {
         checkArgument(fieldsToRetrive != null, "fieldsToRetrive cannot be null.");
 
         final Query query = new Query(this.logicalOperatorProcessor.generateCriteria(queryCriteria));
+        fieldsToRetrive.forEach(query.fields()::include);
+        query.fields().exclude(MONGO_OBJECT_ID);
+
         final List<Document> mongoResults = this.mongoTemplate.find(query, Document.class, entity);
 
         return convertDocumentToMap(mongoResults);
@@ -53,11 +58,17 @@ public class MongoDataStoreImpl implements DataStoreDAO {
         checkArgument(StringUtils.isNotBlank(query), "query cannot be null or blank.");
         checkArgument(fieldsToRetrive != null, "fieldsToRetrive cannot be null.");
 
-        final String projection = fieldsToRetrive.stream()
+        final List<String> projection = fieldsToRetrive.stream()
                 .map(field -> "'" + field + "'" + ": 1")
+                .collect(Collectors.toList());
+
+        //remove default _id field
+        projection.add(MONGO_OBJECT_ID + ": 0");
+
+        final String projectionJson = projection.stream()
                 .collect(Collectors.joining(", ", "{", "}"));
 
-        final BasicQuery basicQuery = new BasicQuery(query, projection);
+        final BasicQuery basicQuery = new BasicQuery(query, projectionJson);
 
         final List<Document> mongoResults = this.mongoTemplate.find(basicQuery, Document.class, entity);
 

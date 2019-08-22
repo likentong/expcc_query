@@ -1,4 +1,4 @@
-package org.exp.cc.model.demographic.controller;
+package org.exp.cc.model.controller;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,15 +8,15 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Demographic response model.
+ * Response model.
  */
-public class DemographicResponse {
+public class Response {
     private final List<Map<String, Object>> result;
     private final Map<String, Object> summary;
 
     @JsonCreator
-    public DemographicResponse(@JsonProperty("result") final List<Map<String, Object>> result,
-                               @JsonProperty("details") final Map<String, Object> summary) {
+    public Response(@JsonProperty("result") final List<Map<String, Object>> result,
+                    @JsonProperty("details") final Map<String, Object> summary) {
         this.result = result;
         this.summary = summary;
     }
@@ -37,7 +37,7 @@ public class DemographicResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final DemographicResponse that = (DemographicResponse) o;
+        final Response that = (Response) o;
         return Objects.equals(result, that.result) &&
                 Objects.equals(summary, that.summary);
     }

@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import org.exp.cc.constant.ApplicationConstant;
 import org.exp.cc.constant.PersistenceConstant;
 import org.exp.cc.datastore.dao.demographic.DemographicDAO;
-import org.exp.cc.model.demographic.service.DemographicQuery;
-import org.exp.cc.model.demographic.service.DemographicResult;
+import org.exp.cc.model.service.demographic.DemographicQuery;
+import org.exp.cc.model.service.Result;
 import org.exp.cc.service.DemographicService;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class DemographicServiceImpl implements DemographicService {
     }
 
     @Override
-    public DemographicResult queryData(final DemographicQuery query) {
+    public Result queryData(final DemographicQuery query) {
         checkArgument(query != null, "query cannot be null.");
 
         final List<Object> demographicIds = this.demographicDAO.getIds(query);
@@ -36,6 +36,6 @@ public class DemographicServiceImpl implements DemographicService {
                 ApplicationConstant.Summary.RECORD_COUNT, demographicIds.size()
         );
 
-        return new DemographicResult(null, summary);
+        return new Result(null, summary);
     }
 }

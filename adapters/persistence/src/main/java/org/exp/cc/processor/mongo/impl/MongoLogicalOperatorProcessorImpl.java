@@ -23,10 +23,10 @@ public class MongoLogicalOperatorProcessorImpl implements LogicalOperatorProcess
     private final ComparisonOperatorProcessor comparisonOperatorProcessor;
 
     private final Map<String, Function<QueryFields, Criteria>> logicalOperatorProcessor =
-            ImmutableMap.of(
-                    LogicalOperator.AND.getOperator(), this::andLogicalProcessor,
-                    LogicalOperator.OR.getOperator(), this::orLogicalProcessor
-            );
+            ImmutableMap.<String, Function<QueryFields, Criteria>>builder()
+                    .put(LogicalOperator.AND.getOperator(), this::andLogicalProcessor)
+                    .put(LogicalOperator.OR.getOperator(), this::orLogicalProcessor)
+                    .build();
 
     public MongoLogicalOperatorProcessorImpl(MongoComparisonOperatorProcessor comparisonOperatorProcessor) {
         this.comparisonOperatorProcessor = comparisonOperatorProcessor;

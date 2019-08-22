@@ -9,6 +9,7 @@ public class PersistenceConstant {
 
     public static final class Entity {
         public static final String DEMOGRAPHIC = "demographic";
+        public static final String PERSON = "person";
 
         private Entity() {
         }
