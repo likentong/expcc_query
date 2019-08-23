@@ -14,11 +14,11 @@ import java.util.Arrays;
  */
 @Aspect
 @Component
-public class ExceptionHandlerAspect {
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlerAspect.class);
+public class ExceptionLogHandlerAspect {
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionLogHandlerAspect.class);
 
     @AfterThrowing(
-            value = "@annotation(org.exp.cc.annotation.ExceptionHandler)",
+            value = "@annotation(org.exp.cc.annotation.ExceptionLogHandler)",
             throwing = "ex"
     )
     public void logException(final JoinPoint joinPoint, final Throwable ex) {

@@ -3,7 +3,7 @@ package org.exp.cc.tests.aspect;
 import com.google.common.collect.ImmutableSet;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
-import org.exp.cc.steps.aspect.ExceptionHandlerAspectStep;
+import org.exp.cc.steps.aspect.ExceptionLogHandlerAspectStep;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,17 +26,19 @@ import static uk.org.lidalia.slf4jtest.LoggingEvent.error;
 /**
  * Exception handler aspect test.
  */
-public class ExceptionHandlerAspectTest {
+// Unit test using BDD method and assertion in steps.
+@SuppressWarnings("squid:S2699")
+public class ExceptionLogHandlerAspectTest {
     private static final String DEBUG_LOGGING = "Arguments for method {}: {}";
     private static final String ERROR_LOGGING = "Exception from {}.{}: {}";
     private static final String[] METHOD_ARGS = new String[]{"arg1", "arg2", "arg3"};
 
-    private final ExceptionHandlerAspectStep step;
+    private final ExceptionLogHandlerAspectStep step;
     private JoinPoint joinPoint;
     private Signature signature;
 
-    public ExceptionHandlerAspectTest() {
-        this.step = new ExceptionHandlerAspectStep();
+    public ExceptionLogHandlerAspectTest() {
+        this.step = new ExceptionLogHandlerAspectStep();
     }
 
     @BeforeAll

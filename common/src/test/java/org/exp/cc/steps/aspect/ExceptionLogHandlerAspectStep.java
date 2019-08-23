@@ -2,7 +2,7 @@ package org.exp.cc.steps.aspect;
 
 import com.google.common.collect.ImmutableSet;
 import org.aspectj.lang.JoinPoint;
-import org.exp.cc.aspect.ExceptionHandlerAspect;
+import org.exp.cc.aspect.ExceptionLogHandlerAspect;
 import uk.org.lidalia.slf4jext.Level;
 import uk.org.lidalia.slf4jtest.LoggingEvent;
 import uk.org.lidalia.slf4jtest.TestLogger;
@@ -15,13 +15,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 /**
  * Exception handler aspect step.
  */
-public class ExceptionHandlerAspectStep {
-    private final TestLogger logger = TestLoggerFactory.getTestLogger(ExceptionHandlerAspect.class);
-    private final ExceptionHandlerAspect exceptionHandlerAspect;
+public class ExceptionLogHandlerAspectStep {
+    private final TestLogger logger = TestLoggerFactory.getTestLogger(ExceptionLogHandlerAspect.class);
+    private final ExceptionLogHandlerAspect exceptionHandlerAspect;
     private JoinPoint joinPoint;
 
-    public ExceptionHandlerAspectStep() {
-        this.exceptionHandlerAspect = new ExceptionHandlerAspect();
+    public ExceptionLogHandlerAspectStep() {
+        this.exceptionHandlerAspect = new ExceptionLogHandlerAspect();
     }
 
     /**
@@ -29,7 +29,7 @@ public class ExceptionHandlerAspectStep {
      * @param joinPoint join point
      * @return this instance
      */
-    public ExceptionHandlerAspectStep givenISetupJoinPoint(final JoinPoint joinPoint) {
+    public ExceptionLogHandlerAspectStep givenISetupJoinPoint(final JoinPoint joinPoint) {
         this.joinPoint = joinPoint;
         return this;
     }
@@ -39,7 +39,7 @@ public class ExceptionHandlerAspectStep {
      * @param enabledLevels enabled logging level
      * @return this instance
      */
-    public ExceptionHandlerAspectStep givenISetLoggingLevel(final ImmutableSet<Level> enabledLevels) {
+    public ExceptionLogHandlerAspectStep givenISetLoggingLevel(final ImmutableSet<Level> enabledLevels) {
         this.logger.setEnabledLevels(enabledLevels);
         return this;
     }
@@ -49,7 +49,7 @@ public class ExceptionHandlerAspectStep {
      * @param ex throwable
      * @return this instance
      */
-    public ExceptionHandlerAspectStep whenILogException(final Throwable ex) {
+    public ExceptionLogHandlerAspectStep whenILogException(final Throwable ex) {
         this.exceptionHandlerAspect.logException(this.joinPoint, ex);
         return this;
     }
@@ -59,7 +59,7 @@ public class ExceptionHandlerAspectStep {
      * @param loggingEvent expected logging event
      * @return this instance
      */
-    public ExceptionHandlerAspectStep thenLoggingShouldBe(final List<LoggingEvent> loggingEvent) {
+    public ExceptionLogHandlerAspectStep thenLoggingShouldBe(final List<LoggingEvent> loggingEvent) {
         assertThat(this.logger.getLoggingEvents()).isEqualTo(loggingEvent);
         return this;
     }
