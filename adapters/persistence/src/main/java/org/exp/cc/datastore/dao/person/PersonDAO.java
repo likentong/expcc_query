@@ -9,16 +9,16 @@ import java.util.Set;
  */
 public interface PersonDAO {
     /**
-     * Get person count by id.
+     * Get person count by Demographic id.
      * @param id list of id
      * @return results
      */
-    List<Map<String, Object>> getPersonCountById(Set<Object> id);
+    List<Map<String, Object>> getPersonCountByDemographicId(Set<Object> id);
 
     /**
-     * Get person by id.
+     * Get person by Demographic Id.
      * @param id list of id
      * @return results
      */
-    List<Map<String, Object>> getPersonById(Set<Object> id);
+    List<Map<String, Object>> getPersonByDemographicId(Set<Object> id);
 }

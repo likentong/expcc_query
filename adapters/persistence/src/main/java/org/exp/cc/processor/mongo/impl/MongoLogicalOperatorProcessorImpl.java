@@ -36,6 +36,7 @@ public class MongoLogicalOperatorProcessorImpl implements LogicalOperatorProcess
     public Criteria generateCriteria(final QueryCriteria queryCriteria) {
         final Criteria[] criteria = queryCriteria.getQuery()
                 .stream()
+                .filter(logicalQueries -> logicalQueries.size() != 0)
                 .map(logicalQueries -> {
                     //does not support nested operators
                     if (logicalQueries.size() > 1) {
@@ -57,18 +58,28 @@ public class MongoLogicalOperatorProcessorImpl implements LogicalOperatorProcess
 
                     final List<Criteria> logicalCriteria = new ArrayList<>();
 
-                    logicalQueries.forEach((key, value) -> {
-                        if (this.logicalOperatorProcessor.get(key) == null) {
-                            throw new ApplicationRuntimeException(String.format("Logical operator processor not found for %s", key));
-                        }
+                    logicalQueries.entrySet()
+                            .stream()
+                            .filter(entrySet -> !entrySet.getValue().getFields().isEmpty())
+                            .forEach(entrySet -> {
+                                if (this.logicalOperatorProcessor.get(entrySet.getKey()) == null) {
+                                    throw new ApplicationRuntimeException(String.format("Logical operator processor not found for %s", entrySet.getKey()));
+                                }
 
-                        logicalCriteria.add(this.logicalOperatorProcessor.get(key).apply(value));
-                    });
+                                logicalCriteria.add(this.logicalOperatorProcessor.get(entrySet.getKey()).apply(entrySet.getValue()));
+                            });
 
                     return logicalCriteria;
                 })
+                .filter(element -> !element.isEmpty())
                 .flatMap(Collection::stream)
                 .toArray(Criteria[]::new);
+
+        if (criteria.length == 0) {
+            return new Criteria();
+        } else if (criteria.length == 1) {
+            return criteria[0];
+        }
 
         return new Criteria().andOperator(criteria);
     }

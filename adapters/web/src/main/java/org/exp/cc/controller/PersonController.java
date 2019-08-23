@@ -25,8 +25,8 @@ public class PersonController {
 
     @GetMapping
     @ExceptionHandler
-    public Response getPerson(@RequestParam Set<Object> id) {
-        final Result results = this.personService.getPerson(id);
+    public Response getPerson(@RequestParam Set<Object> demographicId) {
+        final Result results = this.personService.getPerson(demographicId);
         return new Response(results.getResult(), results.getSummary());
     }
 

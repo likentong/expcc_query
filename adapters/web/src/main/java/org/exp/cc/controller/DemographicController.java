@@ -27,7 +27,8 @@ public class DemographicController {
     @PostMapping(path = "/id/count", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler
     public Response getIDsWithPersonCount(@RequestBody final DemographicRequest demographicRequest) {
-        final Result demographicResult = demographicService.queryData(new DemographicQuery(demographicRequest.getQuery()));
+        final Result demographicResult = this.demographicService.getIDWithPersonCount(new DemographicQuery(demographicRequest.getQuery()));
+
         return new Response(demographicResult.getResult(), demographicResult.getSummary());
     }
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,6 @@ public class MongoComparisonOperatorProcessor implements ComparisonOperatorProce
                 .stream()
                 .map(fields -> {
                     final String fieldName = fields.getKey();
-                    final Criteria andCriteria = new Criteria();
 
                     final Criteria[] criteria = fields.getValue()
                             .getOperator()
@@ -62,7 +62,13 @@ public class MongoComparisonOperatorProcessor implements ComparisonOperatorProce
                             })
                             .toArray(Criteria[]::new);
 
-                    return criteria.length == 1 ? criteria[0] : andCriteria.andOperator(criteria);
+                    if (criteria.length == 0) {
+                        return new Criteria();
+                    } else if (criteria.length == 1) {
+                        return criteria[0];
+                    }
+
+                    return new Criteria().andOperator(criteria);
                 })
                 .toArray(Criteria[]::new);
     }
@@ -88,6 +94,14 @@ public class MongoComparisonOperatorProcessor implements ComparisonOperatorProce
     }
 
     private Criteria inComparisonProcessor(final String fieldName, final Object fieldValue) {
-        return Criteria.where(fieldName).in(fieldValue);
+        Set<Object> value;
+
+        if (fieldValue instanceof Set) {
+            value = (Set) fieldValue;
+        } else {
+            throw new ApplicationRuntimeException(String.format("Invalid in comparison operator value: %s, set data type is required.", fieldValue));
+        }
+
+        return Criteria.where(fieldName).in(value);
     }
 }

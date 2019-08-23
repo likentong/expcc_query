@@ -20,13 +20,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static org.exp.cc.constant.PersistenceConstant.MongoDB.MONGO_OBJECT_ID;
 
 /**
  * Mongodb data store implementation.
  */
 @Repository
 public class MongoDataStoreImpl implements DataStoreDAO {
-    private static final String MONGO_OBJECT_ID = "_id";
     private static final String BLANK_ENTITY_ERROR = "entity cannot be null or blank.";
 
     private final MongoTemplate mongoTemplate;

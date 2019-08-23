@@ -28,7 +28,7 @@ public class PersonServiceImpl implements PersonService {
     public Result getPerson(final Set<Object> id) {
         checkArgument(id != null, "id cannot be null.");
 
-        List<Map<String, Object>> persons = this.personDAO.getPersonById(id);
+        List<Map<String, Object>> persons = this.personDAO.getPersonByDemographicId(id);
 
         return new Result(persons, generateSummary(persons.size()));
     }
@@ -37,7 +37,7 @@ public class PersonServiceImpl implements PersonService {
     public Result getPersonCountGroupByDemographicID(final Set<Object> id) {
         checkArgument(id != null, "id cannot be null.");
 
-        List<Map<String, Object>> personCount = this.personDAO.getPersonCountById(id);
+        List<Map<String, Object>> personCount = this.personDAO.getPersonCountByDemographicId(id);
 
         return new Result(personCount, generateSummary(personCount.size()));
     }

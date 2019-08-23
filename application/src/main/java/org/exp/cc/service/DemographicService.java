@@ -12,5 +12,5 @@ public interface DemographicService {
      * @param query query
      * @return result
      */
-    Result queryData(DemographicQuery query);
+    Result getIDWithPersonCount(DemographicQuery query);
 }

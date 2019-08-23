@@ -26,7 +26,7 @@ public class PersonDAOImpl implements PersonDAO {
     }
 
     @Override
-    public List<Map<String, Object>> getPersonCountById(final Set<Object> id) {
+    public List<Map<String, Object>> getPersonCountByDemographicId(final Set<Object> id) {
         final QueryOperator queryOperator = new QueryOperator(ImmutableMap.of(ComparisonOperator.IN.getOperator(), id));
         final QueryFields queryFields = new QueryFields(ImmutableMap.of(PersistenceConstant.Demographic.ID, queryOperator));
         final Map<String, AggregationOperator> fieldsToAggregate = ImmutableMap.of(PersistenceConstant.Person.ID_PERSON, AggregationOperator.SUM);
@@ -40,7 +40,7 @@ public class PersonDAOImpl implements PersonDAO {
     }
 
     @Override
-    public List<Map<String, Object>> getPersonById(final Set<Object> id) {
+    public List<Map<String, Object>> getPersonByDemographicId(final Set<Object> id) {
         return this.dataStoreDAO.queryData(
                 PersistenceConstant.Entity.PERSON,
                 String.format("{ %s : { $in : [%s] }}", PersistenceConstant.Demographic.ID,
