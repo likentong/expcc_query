@@ -1,6 +1,6 @@
 package org.exp.cc.controller;
 
-import org.exp.cc.annotation.ExceptionHandler;
+import org.exp.cc.annotation.ExceptionLogHandler;
 import org.exp.cc.model.controller.Response;
 import org.exp.cc.model.service.Result;
 import org.exp.cc.service.PersonService;
@@ -24,8 +24,8 @@ public class PersonController {
     }
 
     @GetMapping
-    @ExceptionHandler
-    public Response getPerson(@RequestParam Set<Object> demographicId) {
+    @ExceptionLogHandler
+    public Response getPerson(@RequestParam(value = "demographic_id") Set<Object> demographicId) {
         final Result results = this.personService.getPerson(demographicId);
         return new Response(results.getResult(), results.getSummary());
     }

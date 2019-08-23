@@ -2,7 +2,6 @@ package org.exp.cc.datastore.dao.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
-import org.exp.cc.annotation.ExceptionHandler;
 import org.exp.cc.datastore.dao.DataStoreDAO;
 import org.exp.cc.model.AggregationCriteria;
 import org.exp.cc.model.persistence.QueryCriteria;
@@ -41,7 +40,6 @@ public class MongoDataStoreImpl implements DataStoreDAO {
         this.aggregationOperatorProcessor = aggregationOperatorProcessor;
     }
 
-    @ExceptionHandler
     @Override
     public List<Map<String, Object>> queryData(final String entity, final QueryCriteria queryCriteria, final List<String> fieldsToRetrive) {
         checkArgument(StringUtils.isNotBlank(entity), BLANK_ENTITY_ERROR);
@@ -57,7 +55,6 @@ public class MongoDataStoreImpl implements DataStoreDAO {
         return convertDocumentToMap(mongoResults);
     }
 
-    @ExceptionHandler
     @Override
     public List<Map<String, Object>> queryData(final String entity, final String query, final List<String> fieldsToRetrive) {
         checkArgument(StringUtils.isNotBlank(entity), BLANK_ENTITY_ERROR);

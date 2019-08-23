@@ -1,6 +1,6 @@
 package org.exp.cc.controller;
 
-import org.exp.cc.annotation.ExceptionHandler;
+import org.exp.cc.annotation.ExceptionLogHandler;
 import org.exp.cc.model.controller.Response;
 import org.exp.cc.model.controller.demographic.DemographicRequest;
 import org.exp.cc.model.service.Result;
@@ -24,8 +24,8 @@ public class DemographicController {
         this.demographicService = demographicService;
     }
 
-    @PostMapping(path = "/id/count", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ExceptionHandler
+    @PostMapping(path = "/id/person_count", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ExceptionLogHandler
     public Response getIDsWithPersonCount(@RequestBody final DemographicRequest demographicRequest) {
         final Result demographicResult = this.demographicService.getIDWithPersonCount(new DemographicQuery(demographicRequest.getQuery()));
 
