@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -32,6 +33,7 @@ public class DemographicDAOImpl implements DemographicDAO {
 
         return results.stream()
                 .map(entry -> entry.get(PersistenceConstant.Demographic.ID))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
