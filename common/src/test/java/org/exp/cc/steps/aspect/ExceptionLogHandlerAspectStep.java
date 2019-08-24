@@ -59,7 +59,7 @@ public class ExceptionLogHandlerAspectStep {
      * @param loggingEvent expected logging event
      * @return this instance
      */
-    public ExceptionLogHandlerAspectStep thenLoggingShouldBe(final List<LoggingEvent> loggingEvent) {
+    public ExceptionLogHandlerAspectStep thenLoggingEventShouldBe(final List<LoggingEvent> loggingEvent) {
         assertThat(this.logger.getLoggingEvents()).isEqualTo(loggingEvent);
         return this;
     }

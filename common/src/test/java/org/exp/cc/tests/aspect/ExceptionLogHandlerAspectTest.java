@@ -79,7 +79,7 @@ public class ExceptionLogHandlerAspectTest {
     public void logException_AnyThrowable_LogWithCorrectMessage(final Throwable ex) {
         this.step.givenISetLoggingLevel(ConventionalLevelHierarchy.ERROR_LEVELS)
                 .whenILogException(ex)
-                .thenLoggingShouldBe(newArrayList(error(ex, ERROR_LOGGING, Object.class.getName(), signature, ex.getMessage())));
+                .thenLoggingEventShouldBe(newArrayList(error(ex, ERROR_LOGGING, Object.class.getName(), signature, ex.getMessage())));
     }
 
     /**
@@ -93,7 +93,7 @@ public class ExceptionLogHandlerAspectTest {
 
         this.step.givenISetLoggingLevel(ConventionalLevelHierarchy.ERROR_LEVELS)
                 .whenILogException(exception)
-                .thenLoggingShouldBe(newArrayList(error(exception, ERROR_LOGGING, Object.class.getName(), signature, exception.getMessage())));
+                .thenLoggingEventShouldBe(newArrayList(error(exception, ERROR_LOGGING, Object.class.getName(), signature, exception.getMessage())));
     }
 
     /**
@@ -105,7 +105,7 @@ public class ExceptionLogHandlerAspectTest {
     public void logException_DebugLoggingLevel_LogWithCorrectMessage(final Throwable ex) {
         this.step.givenISetLoggingLevel(ConventionalLevelHierarchy.DEBUG_LEVELS)
                 .whenILogException(ex)
-                .thenLoggingShouldBe(newArrayList(
+                .thenLoggingEventShouldBe(newArrayList(
                         debug(DEBUG_LOGGING, signature, Arrays.toString(METHOD_ARGS)),
                         error(ex, ERROR_LOGGING, Object.class.getName(), signature, ex.getMessage()))
                 );
