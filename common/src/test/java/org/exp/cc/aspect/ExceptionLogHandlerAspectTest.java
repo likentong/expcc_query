@@ -26,8 +26,6 @@ import static uk.org.lidalia.slf4jtest.LoggingEvent.error;
 /**
  * Exception handler aspect test.
  */
-// Unit test using BDD method and assertion in steps.
-@SuppressWarnings("squid:S2699")
 public class ExceptionLogHandlerAspectTest {
     private static final String DEBUG_LOGGING = "Arguments for method {}: {}";
     private static final String ERROR_LOGGING = "Exception from {}.{}: {}";
