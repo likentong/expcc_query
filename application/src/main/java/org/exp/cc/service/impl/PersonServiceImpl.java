@@ -3,6 +3,7 @@ package org.exp.cc.service.impl;
 import com.google.common.collect.ImmutableMap;
 import org.exp.cc.constant.ApplicationConstant;
 import org.exp.cc.datastore.dao.person.PersonDAO;
+import org.exp.cc.impl.amqp.PersonMessageQueue;
 import org.exp.cc.model.service.Result;
 import org.exp.cc.service.PersonService;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 @Service
 public class PersonServiceImpl implements PersonService {
     private final PersonDAO personDAO;
+    private final PersonMessageQueue personMessageQueue;
 
-    public PersonServiceImpl(final PersonDAO personDAO) {
+    public PersonServiceImpl(final PersonDAO personDAO, final PersonMessageQueue personMessageQueue) {
         this.personDAO = personDAO;
+        this.personMessageQueue = personMessageQueue;
     }
 
     @Override
@@ -40,6 +43,13 @@ public class PersonServiceImpl implements PersonService {
         List<Map<String, Object>> personCount = this.personDAO.getPersonCountByDemographicId(id);
 
         return new Result(personCount, generateSummary(personCount.size()));
+    }
+
+    @Override
+    public void sendToPersonQueue(final Map<String, Object> person) {
+        checkArgument(person != null, "person cannot be null.");
+
+        this.personMessageQueue.sendMessage(person);
     }
 
     private Map<String, Object> generateSummary(final Integer recordCount) {

@@ -44,6 +44,7 @@
 
     <logger name="org.exp.cc" level="info" additivity="false">
         <appender-ref ref="expccRollingFile"/>
+        <appender-ref ref="Console"/>
     </logger>
 
 </configuration>

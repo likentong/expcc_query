@@ -1,4 +1,5 @@
 dependencies {
     implementation project(':common')
     implementation project(':adapters:persistence')
+    implementation project(':adapters:message-queue')
 }
