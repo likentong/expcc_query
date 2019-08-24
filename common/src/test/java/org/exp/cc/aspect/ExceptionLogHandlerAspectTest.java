@@ -1,9 +1,9 @@
-package org.exp.cc.tests.aspect;
+package org.exp.cc.aspect;
 
 import com.google.common.collect.ImmutableSet;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
-import org.exp.cc.steps.aspect.ExceptionLogHandlerAspectStep;
+import org.exp.cc.aspect.steps.ExceptionLogHandlerAspectStep;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
