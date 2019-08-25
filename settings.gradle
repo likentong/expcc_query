@@ -1,9 +1,8 @@
 rootProject.name = 'expcc_query'
+include 'common-test'
 include 'common'
 include 'application'
 include 'adapters:persistence'
 include 'adapters:web'
 include 'adapters:message-queue'
 include 'configuration'
-
-

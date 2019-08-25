@@ -1,0 +1,17 @@
+dependencies {
+
+}
+
+task jarTests(type: Jar, dependsOn: testClasses) {
+    from sourceSets.test.output
+}
+
+configurations {
+    tests {
+        extendsFrom testRuntime
+    }
+}
+
+artifacts {
+    tests jarTests
+}
