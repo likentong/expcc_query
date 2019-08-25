@@ -7,4 +7,6 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
     api group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
+
+    testImplementation project(path: ':common-test', configuration: 'tests')
 }

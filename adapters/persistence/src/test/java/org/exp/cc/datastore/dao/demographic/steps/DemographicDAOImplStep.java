@@ -1,11 +1,11 @@
 package org.exp.cc.datastore.dao.demographic.steps;
 
-import org.assertj.core.api.ThrowableAssert;
 import org.exp.cc.constant.PersistenceConstant;
 import org.exp.cc.datastore.dao.DataStoreDAO;
 import org.exp.cc.datastore.dao.demographic.DemographicDAO;
 import org.exp.cc.datastore.dao.demographic.impl.DemographicDAOImpl;
 import org.exp.cc.model.persistence.QueryCriteria;
+import org.exp.cc.test.ThrowableStep;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,11 +20,10 @@ import static org.mockito.Mockito.when;
 /**
  * DemographicDAO implementation step.
  */
-public class DemographicDAOImplStep {
+public class DemographicDAOImplStep extends ThrowableStep<DemographicDAOImplStep> {
     private DataStoreDAO dataStoreDAO;
     private DemographicDAO demographicDAO;
     private List<Object> results;
-    private Throwable thrown;
 
     public DemographicDAOImplStep() {
         this.dataStoreDAO = mock(DataStoreDAO.class);
@@ -36,16 +35,6 @@ public class DemographicDAOImplStep {
      */
     public DemographicDAOImplStep givenISetupDemographicDAOImpl() {
         this.demographicDAO = new DemographicDAOImpl(this.dataStoreDAO);
-        return this;
-    }
-
-    /**
-     * Step to setup throwing callable.
-     * @param throwingCallable throwing callable
-     * @return this instance
-     */
-    public DemographicDAOImplStep givenISetupAThrowingCallable(final ThrowableAssert.ThrowingCallable throwingCallable) {
-        this.thrown = ThrowableAssert.catchThrowable(throwingCallable);
         return this;
     }
 
@@ -82,23 +71,4 @@ public class DemographicDAOImplStep {
         return this;
     }
 
-    /**
-     * Step to assert exception class type.
-     * @param exceptionClass exception class
-     * @return this instance
-     */
-    public DemographicDAOImplStep thenExceptionMatchCorrectType(final Class<? extends Throwable> exceptionClass) {
-        assertThat(this.thrown).isExactlyInstanceOf(exceptionClass);
-        return this;
-    }
-
-    /**
-     * Step to assert exception message.
-     * @param exceptionMessage exception message
-     * @return this instance
-     */
-    public DemographicDAOImplStep thenExceptionWithCorrectMessage(final String exceptionMessage) {
-        assertThat(this.thrown).hasMessage(exceptionMessage);
-        return this;
-    }
 }
