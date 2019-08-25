@@ -27,6 +27,10 @@ import static org.exp.cc.constant.PersistenceConstant.MongoDB.MONGO_OBJECT_ID;
 @Repository
 public class MongoDataStoreImpl implements DataStoreDAO {
     private static final String BLANK_ENTITY_ERROR = "entity cannot be null or blank.";
+    private static final String NULL_FIELDS_ERROR = "fieldsToRetrive cannot be null.";
+    private static final String NULL_QUERY_CRITERIA_ERROR = "queryCriteria cannot be null.";
+    private static final String BLANK_QUERY_STRING_ERROR = "query string cannot be null or blank.";
+    private static final String NULL_AGGREGATION_CRITERIA_ERROR = "aggregationCriteria cannot be null.";
 
     private final MongoTemplate mongoTemplate;
     private final LogicalOperatorProcessor logicalOperatorProcessor;
@@ -43,8 +47,8 @@ public class MongoDataStoreImpl implements DataStoreDAO {
     @Override
     public List<Map<String, Object>> queryData(final String entity, final QueryCriteria queryCriteria, final List<String> fieldsToRetrive) {
         checkArgument(StringUtils.isNotBlank(entity), BLANK_ENTITY_ERROR);
-        checkArgument(queryCriteria != null, "query cannot be null.");
-        checkArgument(fieldsToRetrive != null, "fieldsToRetrive cannot be null.");
+        checkArgument(queryCriteria != null, NULL_QUERY_CRITERIA_ERROR);
+        checkArgument(fieldsToRetrive != null, NULL_FIELDS_ERROR);
 
         final Query query = new Query(this.logicalOperatorProcessor.generateCriteria(queryCriteria));
         fieldsToRetrive.forEach(query.fields()::include);
@@ -58,8 +62,8 @@ public class MongoDataStoreImpl implements DataStoreDAO {
     @Override
     public List<Map<String, Object>> queryData(final String entity, final String query, final List<String> fieldsToRetrive) {
         checkArgument(StringUtils.isNotBlank(entity), BLANK_ENTITY_ERROR);
-        checkArgument(StringUtils.isNotBlank(query), "query cannot be null or blank.");
-        checkArgument(fieldsToRetrive != null, "fieldsToRetrive cannot be null.");
+        checkArgument(StringUtils.isNotBlank(query), BLANK_QUERY_STRING_ERROR);
+        checkArgument(fieldsToRetrive != null, NULL_FIELDS_ERROR);
 
         final List<String> projection = fieldsToRetrive.stream()
                 .map(field -> "'" + field + "'" + ": 1")
@@ -81,10 +85,7 @@ public class MongoDataStoreImpl implements DataStoreDAO {
     @Override
     public List<Map<String, Object>> aggregateData(final String entity, final AggregationCriteria aggregationCriteria) {
         checkArgument(StringUtils.isNotBlank(entity), BLANK_ENTITY_ERROR);
-        checkArgument(aggregationCriteria != null, "aggregationCriteria cannot be null.");
-        checkArgument(aggregationCriteria.getQueryFields() != null, "aggregationCriteria queryField cannot be null.");
-        checkArgument(aggregationCriteria.getFieldsToAggregate() != null, "aggregationCriteria fieldsToAggregate cannot be null.");
-        checkArgument(aggregationCriteria.getFieldsToGroup() != null, "aggregationCriteria fieldsToGroup cannot be null.");
+        checkArgument(aggregationCriteria != null, NULL_AGGREGATION_CRITERIA_ERROR);
 
         final AggregationResults<Document> mongoResults = this.mongoTemplate.aggregate(
                 this.aggregationOperatorProcessor.generateAggregation(aggregationCriteria),
