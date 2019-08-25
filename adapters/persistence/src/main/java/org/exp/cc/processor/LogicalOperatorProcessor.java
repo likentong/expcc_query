@@ -1,4 +1,4 @@
-package org.exp.cc.processor.mongo;
+package org.exp.cc.processor;
 
 import org.exp.cc.model.persistence.QueryCriteria;
 import org.springframework.data.mongodb.core.query.Criteria;

@@ -1,4 +1,4 @@
-package org.exp.cc.processor.mongo.impl;
+package org.exp.cc.processor.impl.mongo;
 
 import com.google.common.collect.ImmutableMap;
 import org.exp.cc.enums.LogicalOperator;
@@ -6,8 +6,8 @@ import org.exp.cc.exception.ApplicationRuntimeException;
 import org.exp.cc.exception.InvalidQueryException;
 import org.exp.cc.model.persistence.QueryCriteria;
 import org.exp.cc.model.persistence.QueryFields;
-import org.exp.cc.processor.mongo.ComparisonOperatorProcessor;
-import org.exp.cc.processor.mongo.LogicalOperatorProcessor;
+import org.exp.cc.processor.ComparisonOperatorProcessor;
+import org.exp.cc.processor.LogicalOperatorProcessor;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +15,13 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Query processor.
  */
 @Component
-public class MongoLogicalOperatorProcessorImpl implements LogicalOperatorProcessor {
+public class LogicalOperatorProcessorImpl implements LogicalOperatorProcessor {
     private final ComparisonOperatorProcessor comparisonOperatorProcessor;
 
     private final Map<String, Function<QueryFields, Criteria>> logicalOperatorProcessor =
@@ -28,12 +30,14 @@ public class MongoLogicalOperatorProcessorImpl implements LogicalOperatorProcess
                     .put(LogicalOperator.OR.getOperator(), this::orLogicalProcessor)
                     .build();
 
-    public MongoLogicalOperatorProcessorImpl(MongoComparisonOperatorProcessor comparisonOperatorProcessor) {
+    public LogicalOperatorProcessorImpl(ComparisonOperatorProcessorImpl comparisonOperatorProcessor) {
         this.comparisonOperatorProcessor = comparisonOperatorProcessor;
     }
 
     @Override
     public Criteria generateCriteria(final QueryCriteria queryCriteria) {
+        checkArgument(queryCriteria != null, "queryCriteria cannot be null.");
+
         final Criteria[] criteria = queryCriteria.getQuery()
                 .stream()
                 .filter(logicalQueries -> logicalQueries.size() != 0)
