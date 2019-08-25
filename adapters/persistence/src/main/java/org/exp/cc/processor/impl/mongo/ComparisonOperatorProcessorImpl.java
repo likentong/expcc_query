@@ -1,6 +1,7 @@
 package org.exp.cc.processor.impl.mongo;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.StringUtils;
 import org.exp.cc.enums.ComparisonOperator;
 import org.exp.cc.exception.ApplicationRuntimeException;
 import org.exp.cc.exception.InvalidQueryException;
@@ -8,7 +9,6 @@ import org.exp.cc.model.persistence.QueryFields;
 import org.exp.cc.processor.ComparisonOperatorProcessor;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +37,7 @@ public class ComparisonOperatorProcessorImpl implements ComparisonOperatorProces
     @Override
     public Criteria[] generateCriteria(final QueryFields queryFields) {
         checkArgument(queryFields != null, "queryFields cannot be null.");
-        checkArgument(!CollectionUtils.isEmpty(queryFields.getFields()), "fields cannot be null.");
+        checkArgument(queryFields.getFields() != null, "fields cannot be null.");
 
         final List<String> validComparisonOperator = Arrays.stream(ComparisonOperator.values())
                 .map(ComparisonOperator::getOperator)
@@ -56,6 +56,10 @@ public class ComparisonOperatorProcessorImpl implements ComparisonOperatorProces
                             .map(operation -> {
                                 final String operator = operation.getKey();
 
+                                if (StringUtils.isBlank(operator)) {
+                                    throw new InvalidQueryException(String.format("Operator cannot be blank : [%s]", fieldName));
+                                }
+
                                 if (!validComparisonOperator.contains(operator)) {
                                     throw new InvalidQueryException(String.format("%s comparison operator not supported.", operator));
                                 }
@@ -69,12 +73,10 @@ public class ComparisonOperatorProcessorImpl implements ComparisonOperatorProces
                             .toArray(Criteria[]::new);
 
                     if (criteria.length == 0) {
-                        return new Criteria();
-                    } else if (criteria.length == 1) {
-                        return criteria[0];
+                        throw new InvalidQueryException(String.format("%s does not has a query operator.", fieldName));
                     }
 
-                    return new Criteria().andOperator(criteria);
+                    return (criteria.length == 1) ? criteria[0] : new Criteria().andOperator(criteria);
                 })
                 .toArray(Criteria[]::new);
     }
@@ -100,14 +102,12 @@ public class ComparisonOperatorProcessorImpl implements ComparisonOperatorProces
     }
 
     private Criteria inComparisonProcessor(final String fieldName, final Object fieldValue) {
-        Set<Object> value;
-
         if (fieldValue instanceof Set) {
-            value = (Set) fieldValue;
+            return Criteria.where(fieldName).in((Set) fieldValue);
+        } else if (fieldValue instanceof List) {
+            return Criteria.where(fieldName).in((List) fieldValue);
         } else {
-            throw new ApplicationRuntimeException(String.format("Invalid in comparison operator value: %s, set data type is required.", fieldValue));
+            return Criteria.where(fieldName).in(fieldValue);
         }
-
-        return Criteria.where(fieldName).in(value);
     }
 }
