@@ -1,4 +1,4 @@
-package org.exp.cc.datastore.dao.demographic.steps;
+package org.exp.cc.datastore.dao.demographic.impl.steps;
 
 import org.exp.cc.constant.PersistenceConstant;
 import org.exp.cc.datastore.dao.DataStoreDAO;

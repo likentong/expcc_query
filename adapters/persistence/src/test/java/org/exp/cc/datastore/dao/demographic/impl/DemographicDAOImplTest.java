@@ -1,8 +1,8 @@
-package org.exp.cc.datastore.dao.demographic;
+package org.exp.cc.datastore.dao.demographic.impl;
 
 import com.google.common.collect.ImmutableMap;
 import org.exp.cc.constant.PersistenceConstant;
-import org.exp.cc.datastore.dao.demographic.steps.DemographicDAOImplStep;
+import org.exp.cc.datastore.dao.demographic.impl.steps.DemographicDAOImplStep;
 import org.exp.cc.model.persistence.QueryCriteria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
