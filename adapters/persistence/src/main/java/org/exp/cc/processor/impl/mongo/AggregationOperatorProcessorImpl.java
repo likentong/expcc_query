@@ -1,6 +1,7 @@
 package org.exp.cc.processor.impl.mongo;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.exp.cc.constant.PersistenceConstant;
 import org.exp.cc.enums.AggregationOperator;
@@ -43,10 +44,12 @@ public class AggregationOperatorProcessorImpl implements AggregationOperatorProc
         checkArgument(!CollectionUtils.isEmpty(aggregationCriteria.getFieldsToGroup()), "fieldsToGroup cannot be null or empty.");
         checkArgument(!CollectionUtils.isEmpty(aggregationCriteria.getFieldsToAggregate()), "fieldsToAggregate cannot be null or empty.");
         checkArgument(!CollectionUtils.isEmpty(aggregationCriteria.getQueryFields().getFields()), "fields cannot be null or empty.");
+        checkArgument(StringUtils.isNotBlank(aggregationCriteria.getGroupFieldName()), "groupFieldName cannot be blank.");
 
-        final Criteria criteria = new Criteria();
         final Criteria[] matchCriteria = this.comparisonOperatorProcessor.generateCriteria(aggregationCriteria.getQueryFields());
-        final MatchOperation matchOperation = Aggregation.match(criteria.andOperator(matchCriteria));
+        final Criteria criteria = (matchCriteria.length == 1) ? matchCriteria[0] : new Criteria().andOperator(matchCriteria);
+
+        final MatchOperation matchOperation = Aggregation.match(criteria);
         final String[] fields = aggregationCriteria.getFieldsToGroup().toArray(new String[0]);
         final List<String> fieldsToProject = new ArrayList<>();
 
@@ -65,13 +68,9 @@ public class AggregationOperatorProcessorImpl implements AggregationOperatorProc
             groupOperation = this.aggregatorOperatorProcessor.get(operator).apply(groupOperation, new ImmutablePair<>(entry.getKey(), fieldName));
         }
 
-        ProjectionOperation projectionOperation = Aggregation.project();
-
-        if (fields.length == 1) {
-            projectionOperation = projectionOperation.andExpression(PersistenceConstant.MongoDB.MONGO_OBJECT_ID).as(fields[0]);
-        }
-
-        projectionOperation = projectionOperation.andExclude(PersistenceConstant.MongoDB.MONGO_OBJECT_ID)
+        final ProjectionOperation projectionOperation = Aggregation.project()
+                .andExpression(PersistenceConstant.MongoDB.MONGO_OBJECT_ID).as(aggregationCriteria.getGroupFieldName())
+                .andExclude(PersistenceConstant.MongoDB.MONGO_OBJECT_ID)
                 .andInclude(fieldsToProject.toArray(new String[0]));
 
         return Aggregation.newAggregation(matchOperation, groupOperation, projectionOperation);

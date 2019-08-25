@@ -14,11 +14,16 @@ public class AggregationCriteria {
     private final QueryFields queryFields;
     private final List<String> fieldsToGroup;
     private final Map<String, AggregationOperator> fieldsToAggregate;
+    private final String groupFieldName;
 
-    public AggregationCriteria(final QueryFields queryFields, final List<String> fieldsToGroup, final Map<String, AggregationOperator> fieldsToAggregate) {
+    public AggregationCriteria(final QueryFields queryFields,
+                               final List<String> fieldsToGroup,
+                               final Map<String, AggregationOperator> fieldsToAggregate,
+                               final String groupFieldName) {
         this.queryFields = queryFields;
         this.fieldsToGroup = fieldsToGroup;
         this.fieldsToAggregate = fieldsToAggregate;
+        this.groupFieldName = groupFieldName;
     }
 
     public QueryFields getQueryFields() {
@@ -33,6 +38,10 @@ public class AggregationCriteria {
         return fieldsToAggregate;
     }
 
+    public String getGroupFieldName() {
+        return groupFieldName;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -44,11 +53,12 @@ public class AggregationCriteria {
         final AggregationCriteria that = (AggregationCriteria) o;
         return Objects.equals(queryFields, that.queryFields) &&
                 Objects.equals(fieldsToGroup, that.fieldsToGroup) &&
-                Objects.equals(fieldsToAggregate, that.fieldsToAggregate);
+                Objects.equals(fieldsToAggregate, that.fieldsToAggregate) &&
+                Objects.equals(groupFieldName, that.groupFieldName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(queryFields, fieldsToGroup, fieldsToAggregate);
+        return Objects.hash(queryFields, fieldsToGroup, fieldsToAggregate, groupFieldName);
     }
 }

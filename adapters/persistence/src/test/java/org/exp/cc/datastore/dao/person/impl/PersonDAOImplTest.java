@@ -22,6 +22,7 @@ import static de.flapdoodle.embed.process.collections.Collections.newArrayList;
  * PersonDAO implementation test.
  */
 public class PersonDAOImplTest {
+    private static final String ID_EXCEPTION_MESSAGE = "id cannot be null or empty.";
     private final PersonDAOImplStep step;
 
     public PersonDAOImplTest() {
@@ -31,16 +32,15 @@ public class PersonDAOImplTest {
     /**
      * getPersonCountByDemographicId null or empty id, should throws {@link IllegalArgumentException}.
      * @param id id
-     * @param exceptionMessage exception message
      */
     @ParameterizedTest(name = "{0}")
-    @MethodSource("exceptionMessage")
-    public void getPersonCountByDemographicId_NullOrEmptyId_ThrowsIllegalArgumentException(final String testCaseName, final Set<Object> id, final String exceptionMessage) {
+    @MethodSource("invalidArgument")
+    public void getPersonCountByDemographicId_NullOrEmptyId_ThrowsIllegalArgumentException(final String testCaseName, final Set<Object> id) {
         this.step.givenISetupAThrowingCallable(
                 () -> this.step.givenIHaveNoSetup()
                         .whenIGetPersonCountByDemographicId(id))
                 .thenExceptionMatchCorrectType(IllegalArgumentException.class)
-                .thenExceptionWithCorrectMessage(exceptionMessage);
+                .thenExceptionWithCorrectMessage(ID_EXCEPTION_MESSAGE);
     }
 
     /**
@@ -62,7 +62,8 @@ public class PersonDAOImplTest {
         final AggregationCriteria aggregationCriteria = new AggregationCriteria(
                 queryFields,
                 Collections.singletonList(PersistenceConstant.Demographic.ID),
-                fieldsToAggregate);
+                fieldsToAggregate,
+                PersistenceConstant.Demographic.ID);
 
         this.step.givenIMockDataStoreDAOAggregateData(results)
                 .whenIGetPersonCountByDemographicId(id)
@@ -73,16 +74,15 @@ public class PersonDAOImplTest {
     /**
      * getPersonByDemographicId null or empty id, should throws {@link IllegalArgumentException}.
      * @param id id
-     * @param exceptionMessage exception message
      */
     @ParameterizedTest(name = "{0}")
-    @MethodSource("exceptionMessage")
-    public void getPersonByDemographicId_NullOrEmptyId_ThrowIllegalArgumentException(final String testCaseName, final Set<Object> id, final String exceptionMessage) {
+    @MethodSource("invalidArgument")
+    public void getPersonByDemographicId_NullOrEmptyId_ThrowIllegalArgumentException(final String testCaseName, final Set<Object> id) {
         this.step.givenISetupAThrowingCallable(
                 () -> this.step.givenIHaveNoSetup()
                         .whenIGetPersonByDemographicId(id))
                 .thenExceptionMatchCorrectType(IllegalArgumentException.class)
-                .thenExceptionWithCorrectMessage(exceptionMessage);
+                .thenExceptionWithCorrectMessage(ID_EXCEPTION_MESSAGE);
     }
 
     /**
@@ -103,10 +103,10 @@ public class PersonDAOImplTest {
                 .thenQueryStringShouldBe("{ ID : { $in : [1,2] }}");
     }
 
-    private static Stream<Arguments> exceptionMessage() {
+    private static Stream<Arguments> invalidArgument() {
         return Stream.of(
-                Arguments.of("null_id", null, "id cannot be null."),
-                Arguments.of("empty_id", Collections.emptySet(), "id cannot be empty.")
+                Arguments.of("null_id", null),
+                Arguments.of("empty_id", Collections.emptySet())
         );
     }
 }

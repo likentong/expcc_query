@@ -10,6 +10,7 @@ import org.exp.cc.model.AggregationCriteria;
 import org.exp.cc.model.persistence.QueryFields;
 import org.exp.cc.model.persistence.QueryOperator;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,8 +25,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 @Repository
 public class PersonDAOImpl implements PersonDAO {
-    private static final String ID_NULL_EXCEPTION_MESSAGE = "id cannot be null.";
-    private static final String ID_EMPTY_EXCEPTION_MESSAGE = "id cannot be empty.";
+    private static final String ID_EXCEPTION_MESSAGE = "id cannot be null or empty.";
 
     private final DataStoreDAO dataStoreDAO;
 
@@ -35,8 +35,7 @@ public class PersonDAOImpl implements PersonDAO {
 
     @Override
     public List<Map<String, Object>> getPersonCountByDemographicId(final Set<Object> id) {
-        checkArgument(id != null, ID_NULL_EXCEPTION_MESSAGE);
-        checkArgument(!id.isEmpty(), ID_EMPTY_EXCEPTION_MESSAGE);
+        checkArgument(!CollectionUtils.isEmpty(id), ID_EXCEPTION_MESSAGE);
 
         final QueryOperator queryOperator = new QueryOperator(ImmutableMap.of(ComparisonOperator.IN.getOperator(), id));
         final QueryFields queryFields = new QueryFields(ImmutableMap.of(PersistenceConstant.Demographic.ID, queryOperator));
@@ -45,15 +44,15 @@ public class PersonDAOImpl implements PersonDAO {
         final AggregationCriteria aggregationCriteria = new AggregationCriteria(
                 queryFields,
                 Collections.singletonList(PersistenceConstant.Demographic.ID),
-                fieldsToAggregate);
+                fieldsToAggregate,
+                PersistenceConstant.Demographic.ID);
 
         return this.dataStoreDAO.aggregateData(PersistenceConstant.Entity.PERSON, aggregationCriteria);
     }
 
     @Override
     public List<Map<String, Object>> getPersonByDemographicId(final Set<Object> id) {
-        checkArgument(id != null, ID_NULL_EXCEPTION_MESSAGE);
-        checkArgument(!id.isEmpty(), ID_EMPTY_EXCEPTION_MESSAGE);
+        checkArgument(!CollectionUtils.isEmpty(id), ID_EXCEPTION_MESSAGE);
 
         return this.dataStoreDAO.queryData(
                 PersistenceConstant.Entity.PERSON,
