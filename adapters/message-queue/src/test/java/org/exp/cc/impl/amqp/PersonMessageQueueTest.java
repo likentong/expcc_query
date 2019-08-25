@@ -9,12 +9,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import uk.org.lidalia.slf4jext.ConventionalLevelHierarchy;
 import uk.org.lidalia.slf4jext.Level;
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -91,12 +93,33 @@ public class PersonMessageQueueTest {
                 ));
     }
 
+    /**
+     * Send message with null or empty value, throws {@link IllegalArgumentException}.
+     * @param testCaseName test case name
+     * @param message message
+     * @param exceptionMessage exception message
+     */
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("exceptionMessage")
+    public void sendMessage_NullOrEmptyMessage_ThrowsIllegalArgumentException(final String testCaseName, final Map<String, Object> message, final String exceptionMessage) {
+        this.step.givenISetupAThrowingCallable(() -> this.step.whenISendMessage(message))
+                .thenExceptionMatchCorrectType(IllegalArgumentException.class)
+                .thenExceptionWithCorrectMessage(exceptionMessage);
+    }
+
     private static Stream<ImmutableSet<Level>> loggingLevels() {
         return Stream.of(
                 ConventionalLevelHierarchy.ERROR_LEVELS,
                 ConventionalLevelHierarchy.INFO_LEVELS,
                 ConventionalLevelHierarchy.TRACE_LEVELS,
                 ConventionalLevelHierarchy.WARN_LEVELS
+        );
+    }
+
+    private static Stream<Arguments> exceptionMessage() {
+        return Stream.of(
+                Arguments.of("null_message", null, "message cannot be null."),
+                Arguments.of("empty_message", Collections.emptyMap(), "message cannot be empty.")
         );
     }
 

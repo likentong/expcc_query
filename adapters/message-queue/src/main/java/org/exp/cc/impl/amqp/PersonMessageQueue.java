@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Person message queue.
  */
@@ -26,6 +28,9 @@ public class PersonMessageQueue implements MessageQueue {
 
     @Override
     public void sendMessage(final Map<String, Object> message) {
+        checkArgument(message != null, "message cannot be null.");
+        checkArgument(!message.isEmpty(), "message cannot be empty.");
+
         debugLogging("Sending message to queue using exchange {}, routingKey {}. Message={}",
                 this.personAmqpProperties.getExchange(),
                 this.personAmqpProperties.getRoutingKey(),

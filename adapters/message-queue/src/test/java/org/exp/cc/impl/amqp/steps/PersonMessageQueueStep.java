@@ -3,6 +3,7 @@ package org.exp.cc.impl.amqp.steps;
 import com.google.common.collect.ImmutableSet;
 import org.exp.cc.impl.amqp.PersonMessageQueue;
 import org.exp.cc.properties.amqp.PersonAmqpProperties;
+import org.exp.cc.test.ThrowableStep;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import uk.org.lidalia.slf4jext.Level;
 import uk.org.lidalia.slf4jtest.LoggingEvent;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Person message queue step.
  */
-public class PersonMessageQueueStep {
+public class PersonMessageQueueStep extends ThrowableStep<PersonMessageQueueStep> {
     private final TestLogger logger = TestLoggerFactory.getTestLogger(PersonMessageQueue.class);
 
     private PersonAmqpProperties personAmqpProperties;
