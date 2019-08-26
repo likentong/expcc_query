@@ -33,7 +33,7 @@ public class PersonController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping(path = "/queue", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionLogHandler
-    public void sendToQueue(@RequestBody Map<String, Object> person) {
+    public void addPersonToQueue(@RequestBody Map<String, Object> person) {
         this.personService.sendToPersonQueue(person);
     }
 

@@ -23,6 +23,7 @@ import java.util.Map;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.newArrayList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -50,6 +51,10 @@ public class DemographicControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(new DemographicController(this.demographicService)).build();
     }
 
+    /**
+     * getIdWithPersonCount with valid demographic request, should return response.
+     * @throws Exception exception
+     */
     @Test
     public void getIdWithPersonCount_WithValidDemographicRequest_ShouldReturnsResponse() throws Exception {
         final String request = readFileToString(DEMOGRAPHIC_REQUEST_FILE_LOCATION);
@@ -59,12 +64,12 @@ public class DemographicControllerTest {
         final Map<String, Object> summary = ImmutableMap.of("record_count", 1);
         final Result result = new Result(data, summary);
 
-        when(this.demographicService.getIDWithPersonCount(new DemographicQuery(demographicRequest.getQuery()))).thenReturn(result);
+        when(this.demographicService.getIDWithPersonCount(eq(new DemographicQuery(demographicRequest.getQuery())))).thenReturn(result);
 
         final MvcResult mvcResult = this.mockMvc.perform(post("/demographic/id/person_count")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().is(200))
                 .andReturn();
 
         final Response actualResponse = this.mapper.readValue(mvcResult.getResponse().getContentAsString(), Response.class);
