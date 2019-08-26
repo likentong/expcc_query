@@ -2,4 +2,6 @@ dependencies {
     implementation project(':common')
     implementation project(':adapters:persistence')
     implementation project(':adapters:message-queue')
+
+    testImplementation project(path: ':common-test', configuration: 'tests')
 }

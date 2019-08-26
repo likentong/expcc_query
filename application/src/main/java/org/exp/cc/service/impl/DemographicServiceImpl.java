@@ -32,7 +32,7 @@ public class DemographicServiceImpl implements DemographicService {
 
     @Override
     public Result getIDWithPersonCount(final DemographicQuery query) {
-        checkArgument(query != null, "query cannot be null.");
+        checkArgument(query != null, "demographic query cannot be null.");
 
         final List<Object> demographicIds = this.demographicDAO.getIds(query);
         final List<Map<String, Object>> personCountByDemographicID = this.personDAO.getPersonCountByDemographicId(new HashSet<>(demographicIds));

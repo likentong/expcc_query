@@ -1,12 +1,13 @@
 package org.exp.cc.service.impl;
 
 import com.google.common.collect.ImmutableMap;
+import org.exp.cc.MessageQueue;
 import org.exp.cc.constant.ApplicationConstant;
 import org.exp.cc.datastore.dao.person.PersonDAO;
-import org.exp.cc.impl.amqp.PersonMessageQueue;
 import org.exp.cc.model.service.Result;
 import org.exp.cc.service.PersonService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -19,17 +20,18 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 @Service
 public class PersonServiceImpl implements PersonService {
+    private static final String ID_EXCEPTION_MESSAGE = "id cannot be null or empty.";
     private final PersonDAO personDAO;
-    private final PersonMessageQueue personMessageQueue;
+    private final MessageQueue messageQueue;
 
-    public PersonServiceImpl(final PersonDAO personDAO, final PersonMessageQueue personMessageQueue) {
+    public PersonServiceImpl(final PersonDAO personDAO, final MessageQueue messageQueue) {
         this.personDAO = personDAO;
-        this.personMessageQueue = personMessageQueue;
+        this.messageQueue = messageQueue;
     }
 
     @Override
     public Result getPerson(final Set<Object> id) {
-        checkArgument(id != null, "id cannot be null.");
+        checkArgument(!CollectionUtils.isEmpty(id), ID_EXCEPTION_MESSAGE);
 
         List<Map<String, Object>> persons = this.personDAO.getPersonByDemographicId(id);
 
@@ -38,7 +40,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Result getPersonCountGroupByDemographicID(final Set<Object> id) {
-        checkArgument(id != null, "id cannot be null.");
+        checkArgument(!CollectionUtils.isEmpty(id), ID_EXCEPTION_MESSAGE);
 
         List<Map<String, Object>> personCount = this.personDAO.getPersonCountByDemographicId(id);
 
@@ -47,9 +49,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void sendToPersonQueue(final Map<String, Object> person) {
-        checkArgument(person != null, "person cannot be null.");
+        checkArgument(!CollectionUtils.isEmpty(person), "person cannot be null or empty.");
 
-        this.personMessageQueue.sendMessage(person);
+        this.messageQueue.sendMessage(person);
     }
 
     private Map<String, Object> generateSummary(final Integer recordCount) {
