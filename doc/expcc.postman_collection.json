@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "edf74ad9-6484-4073-a0b3-e21a6316607f",
+		"name": "expcc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Demographic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n   \"query\":\n   [  \n   \t   {  \n         \"$and\":{  \n            \"ID\": {\n            \t\"$in\": [1,2,3]\n            }\n         }\n      },\n      {  \n         \"$or\":{  \n            \"Number of barbecue grills\": {\n            \t\"$gt\": 0,\n            \t\"$lt\": 2\n            }\n         }\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/demographic/id/person_count",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demographic",
+						"id",
+						"person_count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Person",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/person?demographic_id=1,2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"person"
+					],
+					"query": [
+						{
+							"key": "demographic_id",
+							"value": "1,2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PersonQueue",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}
