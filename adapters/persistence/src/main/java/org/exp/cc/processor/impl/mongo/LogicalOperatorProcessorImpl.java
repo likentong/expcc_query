@@ -30,13 +30,14 @@ public class LogicalOperatorProcessorImpl implements LogicalOperatorProcessor {
                     .put(LogicalOperator.OR.getOperator(), this::orLogicalProcessor)
                     .build();
 
-    public LogicalOperatorProcessorImpl(ComparisonOperatorProcessorImpl comparisonOperatorProcessor) {
+    public LogicalOperatorProcessorImpl(ComparisonOperatorProcessor comparisonOperatorProcessor) {
         this.comparisonOperatorProcessor = comparisonOperatorProcessor;
     }
 
     @Override
     public Criteria generateCriteria(final QueryCriteria queryCriteria) {
         checkArgument(queryCriteria != null, "queryCriteria cannot be null.");
+        checkArgument(queryCriteria.getQuery() != null, "queryCriteria query cannot be null.");
 
         final Criteria[] criteria = queryCriteria.getQuery()
                 .stream()
@@ -89,11 +90,13 @@ public class LogicalOperatorProcessorImpl implements LogicalOperatorProcessor {
     }
 
     private Criteria andLogicalProcessor(final QueryFields queryFields) {
-        return new Criteria().andOperator(this.comparisonOperatorProcessor.generateCriteria(queryFields));
+        final Criteria[] criteria = this.comparisonOperatorProcessor.generateCriteria(queryFields);
+        return (criteria.length == 1) ? criteria[0] : new Criteria().andOperator(criteria);
     }
 
     private Criteria orLogicalProcessor(final QueryFields queryFields) {
-        return new Criteria().orOperator(this.comparisonOperatorProcessor.generateCriteria(queryFields));
+        final Criteria[] criteria = this.comparisonOperatorProcessor.generateCriteria(queryFields);
+        return (criteria.length == 1) ? criteria[0] : new Criteria().orOperator(criteria);
     }
 
 }
