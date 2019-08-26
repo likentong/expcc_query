@@ -51,13 +51,13 @@ public class PersonDAOImplTest {
         final Set<Object> id = new HashSet<>(Arrays.asList(1, 2));
 
         final List<Map<String, Object>> results = newArrayList(
-                ImmutableMap.of(PersistenceConstant.Demographic.ID, 1, "idPerson sum", 3),
-                ImmutableMap.of(PersistenceConstant.Demographic.ID, 2, "idPerson sum", 6)
+                ImmutableMap.of(PersistenceConstant.Demographic.ID, 1, "idPerson count", 3),
+                ImmutableMap.of(PersistenceConstant.Demographic.ID, 2, "idPerson count", 6)
         );
 
         final QueryOperator queryOperator = new QueryOperator(ImmutableMap.of(ComparisonOperator.IN.getOperator(), id));
         final QueryFields queryFields = new QueryFields(ImmutableMap.of(PersistenceConstant.Demographic.ID, queryOperator));
-        final Map<String, AggregationOperator> fieldsToAggregate = ImmutableMap.of(PersistenceConstant.Person.ID_PERSON, AggregationOperator.SUM);
+        final Map<String, AggregationOperator> fieldsToAggregate = ImmutableMap.of(PersistenceConstant.Person.ID_PERSON, AggregationOperator.COUNT);
 
         final AggregationCriteria aggregationCriteria = new AggregationCriteria(
                 queryFields,

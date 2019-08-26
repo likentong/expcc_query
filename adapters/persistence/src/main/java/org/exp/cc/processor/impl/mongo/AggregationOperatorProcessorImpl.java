@@ -29,6 +29,7 @@ public class AggregationOperatorProcessorImpl implements AggregationOperatorProc
     private final Map<String, BiFunction<GroupOperation, ImmutablePair<String, String>, GroupOperation>> aggregatorOperatorProcessor =
             ImmutableMap.<String, BiFunction<GroupOperation, ImmutablePair<String, String>, GroupOperation>>builder()
                     .put(AggregationOperator.SUM.getOperator(), this::sumAggregationProcessor)
+                    .put(AggregationOperator.COUNT.getOperator(), this::countAggregationProcessor)
                     .build();
 
     private final ComparisonOperatorProcessor comparisonOperatorProcessor;
@@ -78,5 +79,9 @@ public class AggregationOperatorProcessorImpl implements AggregationOperatorProc
 
     private GroupOperation sumAggregationProcessor(final GroupOperation groupOperation, final ImmutablePair<String, String> fieldNameMapper) {
         return groupOperation.sum(fieldNameMapper.getKey()).as(fieldNameMapper.getValue());
+    }
+
+    private GroupOperation countAggregationProcessor(final GroupOperation groupOperation, final ImmutablePair<String, String> fieldNameMapper) {
+        return groupOperation.count().as(fieldNameMapper.getValue());
     }
 }

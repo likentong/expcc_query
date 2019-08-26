@@ -4,7 +4,7 @@ package org.exp.cc.enums;
  * Aggregation operator enum.
  */
 public enum AggregationOperator {
-    SUM("$sum");
+    SUM("$sum"), COUNT("$count");
 
     private final String operator;
 
