@@ -9,3 +9,9 @@ dependencies {
 bootJar {
     mainClassName = 'org.exp.cc.app.RestApplication'
 }
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
+}
